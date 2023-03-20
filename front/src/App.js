@@ -4,16 +4,52 @@ import { useState, useEffect, useRef } from "react";
 import "./App.scss";
 import Message from "./components/Message/Message";
 import { ErrorBoundary } from "react-error-boundary";
-import { v4 as uuidv4 } from "uuid";
-import debounce from "lodash.debounce";
-import { remove as removeDiacritics } from "diacritics";
 import { VariableSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import Select from "react-select";
+import photo1 from "./assets/generic-photo1.jpg";
+import photo2 from "./assets/generic-photo2.jpg";
+import photo3 from "./assets/generic-photo3.jpg";
+import photo4 from "./assets/generic-photo4.jpg";
+import photo5 from "./assets/generic-photo5.jpg";
+import photo6 from "./assets/generic-photo6.jpg";
+import photo9 from "./assets/generic-photo9.jpg";
+import photo10 from "./assets/generic-photo10.jpg";
+import photo11 from "./assets/generic-photo11.jpg";
+import photo12 from "./assets/generic-photo12.jpg";
+import photo13 from "./assets/generic-photo13.jpg";
+import photo14 from "./assets/generic-photo14.jpg";
+import photo16 from "./assets/generic-photo16.jpg";
+import photo17 from "./assets/generic-photo17.jpg";
+import photo18 from "./assets/generic-photo18.jpg";
+import photo19 from "./assets/generic-photo19.jpg";
+import photo26 from "./assets/generic-photo26.jpg";
+import photo27 from "./assets/generic-photo27.jpg";
+import photo28 from "./assets/generic-photo28.jpg";
+import photo29 from "./assets/generic-photo29.jpg";
 
-import photo1 from "./assets/generic-photo1.png"; /// you can putt a lot of photos here
-
-const photos = [photo1];
+const photos = [
+  photo1,
+  photo2,
+  photo3,
+  photo4,
+  photo5,
+  photo6,
+  photo9,
+  photo10,
+  photo11,
+  photo12,
+  photo13,
+  photo14,
+  photo16,
+  photo17,
+  photo18,
+  photo19,
+  photo26,
+  photo27,
+  photo28,
+  photo29,
+];
 
 function App() {
   const [author, setAuthor] = useState("");
@@ -28,10 +64,7 @@ function App() {
   const [randomPhoto, setRandomPhoto] = useState(null);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [collections, setCollections] = useState([]);
-  const searchRef = useRef();
   const [numberOfResults, setNumberOfResults] = useState(0);
-  const [isSearchActive, setIsSearchActive] = useState(false);
-  const [maxPage, setMaxPage] = useState(1);
   const listRef = useRef(); // Add this ref
   const rowHeights = useRef({}); // Add this ref
   const [scrollToIndex, setScrollToIndex] = useState(-1);
@@ -40,23 +73,6 @@ function App() {
   const [highlightedMessageIndex, setHighlightedMessageIndex] = useState(-1);
   const [numberOfResultsContent, setNumberOfResultsContent] = useState(0);
   const [currentResultIndex, setCurrentResultIndex] = useState(0);
-
-  const scrollToContent = (content) => {
-    const messageIndex = uploadedMessages.findIndex(
-      (message, index) =>
-        index > contentSearchIndex &&
-        message.content &&
-        message.content.includes(content)
-    );
-
-    if (messageIndex !== -1) {
-      setContentSearchIndex(messageIndex);
-      setScrollToIndex(messageIndex);
-      setHighlightedMessageIndex(messageIndex); // Add this line
-    } else {
-      console.error("No more messages with the given content found.");
-    }
-  };
 
   const scrollToTop = () => {
     setContentSearchIndex(0);
@@ -74,6 +90,44 @@ function App() {
     }
   };
 
+  const removeDiacritics = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
+
+  const scrollToContent = (content) => {
+    const normalizedContent = removeDiacritics(content.toLowerCase());
+    console.log("Searching for:", normalizedContent);
+    let messageIndex = -1;
+
+    for (let i = 1; i <= uploadedMessages.length; i++) {
+      const currentIndex = (contentSearchIndex + i) % uploadedMessages.length;
+      const currentMessage = uploadedMessages[currentIndex];
+
+      if (!currentMessage.content) {
+        continue;
+      }
+
+      const normalizedMessageContent = removeDiacritics(
+        currentMessage.content.toLowerCase()
+      );
+      console.log("Checking message:", currentIndex, normalizedMessageContent);
+
+      if (normalizedMessageContent.includes(normalizedContent)) {
+        messageIndex = currentIndex;
+        break;
+      }
+    }
+
+    if (messageIndex !== -1) {
+      console.log("Message found:", messageIndex);
+      setContentSearchIndex(messageIndex);
+      setScrollToIndex(messageIndex);
+      setHighlightedMessageIndex(messageIndex);
+    } else {
+      console.error("No more messages with the given content found.");
+    }
+  };
+
   useEffect(() => {
     if (scrollToIndex !== -1) {
       listRef.current.scrollToItem(scrollToIndex, "center");
@@ -82,7 +136,7 @@ function App() {
   }, [scrollToIndex]);
 
   function getRowHeight(index) {
-    return rowHeights.current[index] || 95; // Add this function
+    return rowHeights.current[index] || 110; // Add this function
   }
   const setRowHeight = (index, size) => {
     // Add this function
@@ -97,23 +151,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    searchRef.current = debounce(() => {
-      setSearchTerm(debouncedSearchTerm);
-    }, 500);
-
-    return () => {
-      clearTimeout(searchRef.current);
-    };
-  }, [debouncedSearchTerm]);
-
-  useEffect(() => {
-    searchRef.current();
-  }, [debouncedSearchTerm]);
-
-  useEffect(() => {
     const fetchCollections = async () => {
       try {
-        const response = await fetch("https://YOUR_BACKEND/collections");
+        const response = await fetch(
+          "https://YOUR_BACKEND_SERVER_HTTP/collections"
+        );
         const data = await response.json();
         setCollections(data);
       } catch (error) {
@@ -134,20 +176,18 @@ function App() {
 
     try {
       const response = await fetch(
-        `https://YOUR_BACKEND.com/messages/${collectionName}`
+        `https://YOUR_BACKEND_SERVER_HTTP/messages/${collectionName}`
       );
       const data = await response.json();
 
-      // Generate UUIDs for messages
-      const messagesWithUUID = data.map((message) => {
+      const mappedMessages = data.map((message) => {
         return {
           ...message,
-          _id: uuidv4(),
         };
       });
 
       // Cache the uploaded messages
-      setUploadedMessages(messagesWithUUID);
+      setUploadedMessages(mappedMessages);
 
       // Set the author and user states only if they are not already set
       if (!author || !user) {
@@ -164,20 +204,13 @@ function App() {
           }
         });
       }
+
       setIsLoading(false);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (debouncedSearchTerm.length === 0) {
-      setIsSearchActive(false);
-    } else {
-      setIsSearchActive(true);
-    }
-  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     const normalizedSearchTerm = removeDiacritics(
@@ -236,38 +269,6 @@ function App() {
     }
   };
 
-  // Update maxPage when updating filteredMessages
-  useEffect(() => {
-    setMaxPage(Math.ceil(numberOfResults / 150000));
-  }, [numberOfResults]);
-
-  const handleScroll = () => {
-    if (isLoading || isSearchActive) return;
-
-    const chatBody = chatBodyRef.current;
-    const scrollTop = chatBody.scrollTop;
-    const scrollHeight = chatBody.scrollHeight;
-    const clientHeight = chatBody.clientHeight;
-
-    // Scroll to the bottom
-    if (scrollTop + clientHeight >= scrollHeight - 100) {
-      if (page < maxPage) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-    // Scroll to the top
-    else if (scrollTop <= 100) {
-      setPage((prevPage) => Math.max(prevPage - 1, 1));
-    }
-  };
-
-  // const style = {
-  //   width: "100%",
-  //   height: "90%",
-  //   "overflow-y": "auto",
-  //   "overflow-x": "hidden",
-  // };
-
   const hiddenScrollbarStyle = {
     scrollbarWidth: "none", // for Firefox
     msOverflowStyle: "none", // for Internet Explorer and Edge
@@ -284,7 +285,7 @@ function App() {
     menu: (provided) => ({
       ...provided,
       border: "black 1px solid",
-      boxShadow: "none",
+      boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
       backgroundColor: "#333",
       width: "20em",
     }),
@@ -308,9 +309,13 @@ function App() {
     }),
     indicatorSeparator: (provided) => ({
       ...provided,
-      display: "none",
+      color: "white",
     }),
     dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "white",
+    }),
+    input: (provided) => ({
       ...provided,
       color: "white",
     }),
@@ -321,7 +326,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `https://YOUR_BACKEND.com/delete/${collectionName}`,
+        `https://YOUR_BACKEND_SERVER_HTTP/delete/${collectionName}`,
         { method: "DELETE" }
       );
 
@@ -348,7 +353,7 @@ function App() {
       const formData = new FormData();
       formData.append("file", files[0]);
 
-      const response = await fetch("https://YOUR_BACKEND/upload", {
+      const response = await fetch("https://YOUR_BACKEND_SERVER_HTTP/upload", {
         method: "POST",
         body: formData,
       });
@@ -381,7 +386,6 @@ function App() {
             const normalizedContent = removeDiacritics(
               messageArray.content.toLowerCase()
             );
-            // Return true if normalizedContent includes the normalizedSearchContent
             return normalizedContent.includes(normalizedSearchContent);
           });
 
@@ -455,7 +459,6 @@ function App() {
               <div
                 className="chat-body"
                 ref={chatBodyRef}
-                onScroll={handleScroll}
                 style={{ height: "calc(100vh - 150px)", position: "relative" }}
               >
                 {filteredMessages.length > 0 ? (
@@ -486,7 +489,6 @@ function App() {
                                 key={messageArray.timestamp_ms}
                                 isLastMessage={isLastMessage}
                                 searchTerm={searchTerm}
-                                uuid={messageArray._id}
                                 setRowHeight={setRowHeight}
                                 index={index}
                                 isHighlighted={
@@ -505,29 +507,27 @@ function App() {
               </div>
             )}
           </div>
-          <div className="footer">
-            <div className="upload-container">
-              <input
-                className="file-input button"
-                type="file"
-                onChange={(e) => uploadFile(e.target.files)} // Replace with your actual upload function
-              />
-            </div>
-            <div className="delete-container">
-              <Select
-                onChange={(selectedOption) => {
-                  handleDelete(selectedOption.value);
-                }}
-                options={collectionOptions}
-                placeholder="Delete a collection"
-                isSearchable={true}
-                isMulti={false}
-                isClearable={true}
-                styles={dropdownStyles}
-                menuPortalTarget={document.body}
-              />
-            </div>
+        </div>
+        <div className="footer">
+          <div className="delete-container">
+            <Select
+              onChange={(selectedOption) => {
+                handleDelete(selectedOption.value);
+              }}
+              options={collectionOptions}
+              placeholder="Delete a collection"
+              isSearchable={true}
+              isMulti={false}
+              isClearable={true}
+              styles={dropdownStyles}
+              menuPortalTarget={document.body}
+            />
           </div>
+          <input
+            className="upload-input button"
+            type="file"
+            onChange={(e) => uploadFile(e.target.files)} // Replace with your actual upload function
+          />
         </div>
       </div>
     </ErrorBoundary>

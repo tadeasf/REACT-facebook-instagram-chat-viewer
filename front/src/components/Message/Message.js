@@ -4,15 +4,7 @@ import React, { useState } from "react";
 import "./index.scss";
 import { DateTime } from "luxon";
 
-const Message = ({
-  message,
-  time,
-  type,
-  author,
-  uuid,
-  isHighlighted,
-  onMessageClick,
-}) => {
+const Message = ({ message, time, type, author, uuid, isHighlighted }) => {
   const [visibility, setVisibility] = useState(false);
 
   const errorFile = {
@@ -49,7 +41,6 @@ const Message = ({
 
   const handleClick = () => {
     setVisibility(!visibility);
-    onMessageClick(uuid);
   };
 
   return (
@@ -73,7 +64,13 @@ const Message = ({
               className="sender-name"
               style={
                 visibility
-                  ? { display: "block", fontSize: "1em", padding: "0.5em" }
+                  ? {
+                      display: "block",
+                      fontSize: "1em",
+                      padding: "0.5em",
+                      justifyContent: "center",
+                      fontStyle: "italic",
+                    }
                   : { display: "none" }
               }
             >
@@ -81,23 +78,18 @@ const Message = ({
             </div>
             {whatKindIs()}
             <div
-              className={`message-uuid`}
+              className="time-ago"
               style={
                 visibility
                   ? {
                       display: "block",
-                      zIndex: 1000,
-                      position: "relative",
-                      fontSize: "1em",
+                      fontSize: "0.85em",
+                      padding: "0.5em",
+                      justifyContent: "center",
+                      fontStyle: "italic",
                     }
                   : { display: "none" }
               }
-            >
-              <p>{uuid}</p>
-            </div>
-            <div
-              className="time-ago"
-              style={visibility ? { display: "block" } : { display: "none" }}
             >
               <p>{DateTime.fromSeconds(time / 1000).toLocaleString()}</p>
             </div>

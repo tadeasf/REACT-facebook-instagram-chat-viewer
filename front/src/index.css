@@ -8,13 +8,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 @media only screen and (max-width: 600px) {
 html {
+  background: #474747;
   max-width: 98%;
 }
 body {
