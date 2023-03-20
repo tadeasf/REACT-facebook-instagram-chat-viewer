@@ -6,6 +6,8 @@ Chat app to look through messages and find those kinky conversations of late!
 
 Before using the Facebook Message Analyzer, you'll need to export your Facebook message data as JSON files. You can use the Facebook JSON Message Data Parser to process the raw data exported from Facebook and generate JSON files that can be uploaded to the application.
 
+REPO HERE: https://github.com/tadeasf/facebook_json_message_data_parser_public
+
 Follow the instructions in the Facebook JSON Message Data Parser repository to prepare your JSON files for analysis.
 
 ## Running the Application
