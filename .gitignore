@@ -1,0 +1,100 @@
+# Ignore node_modules in front directory
+front/node_modules/
+
+# Ignore built files and folders in front directory
+front/build/
+front/dist/
+front/out/
+front/public/bundle.js
+
+# Ignore environment-specific files in front directory
+front/.env
+front/.env.local
+front/.env.development.local
+front/.env.test.local
+front/.env.production.local
+
+# Ignore cache and log files in front directory
+front/npm-debug.log*
+front/yarn-debug.log*
+front/yarn-error.log*
+front/logs/
+front/*.log
+
+# Ignore temporary files in front directory
+front/.DS_Store
+front/*.swp
+front/*.swo
+front/*.bak
+front/*.tmp
+
+# Ignore package manager directories in front directory
+front/node_modules/
+front/yarn-error.log
+front/yarn.lock
+front/pnpm-lock.yaml
+front/.pnp/
+front/.pnp.js
+
+# Ignore Visual Studio Code files in front directory
+front/.vscode/
+front/*.code-workspace
+
+# Ignore IntelliJ IDEA files in front directory
+front/.idea/
+
+# Ignore macOS specific files in front directory
+front/.DS_Store
+
+# Ignore Firebase functions folders in back directory
+back/functions/node_modules/
+
+# Ignore node_modules in back directory
+back/node_modules/
+
+# Ignore built files and folders in back directory
+back/build/
+back/dist/
+back/out/
+
+# Ignore environment-specific files in back directory
+back/.env
+back/.env.local
+back/.env.development.local
+back/.env.test.local
+back/.env.production.local
+
+# Ignore cache and log files in back directory
+back/npm-debug.log*
+back/yarn-debug.log*
+back/yarn-error.log*
+back/logs/
+back/*.log
+
+# Ignore temporary files in back directory
+back/.DS_Store
+back/*.swp
+back/*.swo
+back/*.bak
+back/*.tmp
+
+# Ignore package manager directories in back directory
+back/node_modules/
+back/yarn-error.log
+back/yarn.lock
+back/pnpm-lock.yaml
+back/.pnp/
+back/.pnp.js
+
+# Ignore Visual Studio Code files in back directory
+back/.vscode/
+back/*.code-workspace
+
+# Ignore IntelliJ IDEA files in back directory
+back/.idea/
+
+# Ignore macOS specific files in back directory
+back/.DS_Store
+
+# Ignore Next.js specific files in front directory
+front/.next/

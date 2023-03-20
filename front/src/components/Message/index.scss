@@ -1,0 +1,122 @@
+.message-received {
+  border: 1px solid whitesmoke;
+  padding: 0.3em;
+  border-radius: 1em;
+  margin-top: 1em;
+  margin-bottom: 10em;
+  width: fit-content;
+  margin-left: 3em;
+  margin-right: 1em;
+  max-width: 80%;
+  min-width: 5%;
+  height: fit-content;
+  background: #104576;
+  font-size: 1em;
+}
+
+.message-received p {
+  font-size: 1.2em;
+}
+
+.message-received + .message-received {
+  margin-top: 0.5em;
+}
+
+.message-received .message-uuid {
+  margin-top: 0.125em; // 0.125em is 2px when the font-size is 16px
+  font-size: 1em; // 10px is 0.625em
+  color:whitesmoke;
+  text-align: start;
+  justify-content: flex-start;
+  display: flex;
+}
+
+.message-received .message-uuid p {
+  margin-top: 0.125em; // 0.125em is 2px when the font-size is 16px
+  font-size: 1em; // 10px is 0.625em
+  color:whitesmoke;
+  text-align: start;
+  justify-content: flex-start;
+  display: flex;
+  font-style: italic;
+}
+
+.message-sent-container {
+  justify-content: flex-end;
+  display: flex;
+}
+
+.message-sent {
+  border: 1px solid whitesmoke;
+  padding: 0.3em;
+  border-radius: 1em;
+  margin-top: 1em;
+  margin-bottom: 10em;
+  width: fit-content;
+  margin-left: 0em;
+  margin-right: 3em;
+  max-width: 70%;
+  min-width: 5%;
+  height: fit-content;
+  background: #373a3d;
+  font-size: 1em;
+}
+
+.message-sent p {
+  font-size: 1.2em;
+}
+
+.message-sent + .message-sent {
+  margin-top: 0.5em;
+}
+
+.message-sent .message-uuid {
+  margin-top: 0.125em; // 0.125em is 2px when the font-size is 16px
+  font-size: 1em; // 10px is 0.625em
+  color: whitesmoke;
+  text-align: end;
+  justify-content: flex-end;
+  align-items: end;
+  display: flex;
+}
+
+.message-sent .message-uuid p {
+  margin-top: 0.125em; // 0.125em is 2px when the font-size is 16px
+  font-size: 1em; // 10px is 0.625em
+  color: whitesmoke;
+  text-align: end;
+  justify-content: flex-end;
+  align-items: end;
+  display: flex;
+  font-style: italic;
+}
+
+.message-container {
+  height: fit-content;
+  position: relative;
+}
+
+.post-link {
+  display: inline-block;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.time-ago {
+  transition: 1s;
+  text-align: end;
+  color: whitesmoke;
+  margin-top: 0.125em;
+}
+
+.time-ago p {
+  margin-top: 0.125em; // 0.125em is 2px when the font-size is 16px
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.message-highlighted {
+  background-color: #9b2d2d; /* Choose any color you like */
+}
+
