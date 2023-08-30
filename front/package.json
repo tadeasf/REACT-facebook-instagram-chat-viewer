@@ -13,7 +13,7 @@
     "locutus": "^2.0.15",
     "lodash.debounce": "^4.0.8",
     "luxon": "^2.0.2",
-    "mongodb": "^5.0.1",
+    "mongodb": "^5.8.0",
     "morgan": "^1.10.0",
     "node-sass": "^6.0.1",
     "nodemon": "^2.0.12",
